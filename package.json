@@ -1,0 +1,15 @@
+{
+  "name": "manychat-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server for the ManyChat API — multi-account, plug into Claude Desktop",
+  "type": "module",
+  "bin": {
+    "manychat-mcp": "./index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
