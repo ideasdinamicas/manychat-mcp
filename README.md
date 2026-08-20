@@ -3,13 +3,25 @@
 MCP Server that exposes the full ManyChat public API as tools for Claude Desktop, Cursor, or any MCP-compatible client.
 
 **29 tools** — subscribers, tags, custom fields, bot fields, flows, growth tools, sending.  
-**Multi-account** — one env var per page, no JSON escaping hell.
+**Multi-account** — one env var per page.
 
 ---
 
 ## Setup (Claude Desktop)
 
-### Step 1 — Edit `claude_desktop_config.json`
+### Step 1 — Install uv (if you don't have it)
+
+**Windows (PowerShell):**
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**macOS / Linux:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Step 2 — Edit `claude_desktop_config.json`
 
 | OS | File location |
 |----|--------------|
@@ -23,20 +35,21 @@ MCP Server that exposes the full ManyChat public API as tools for Claude Desktop
     "manychat": {
       "command": "uvx",
       "args": [
-        "--from", "git+https://github.com/ideasdinamicas/manychat-mcp",
+        "--from",
+        "https://github.com/ideasdinamicas/manychat-mcp/archive/refs/heads/main.tar.gz",
         "manychat-mcp"
       ],
       "env": {
-        "MANYCHAT_IQG": "your_iqg_api_key_here"
+        "MANYCHAT_IQG": "your_api_key_here"
       }
     }
   }
 }
 ```
 
-### Step 2 — Restart Claude Desktop
+### Step 3 — Restart Claude Desktop
 
-That's it. `uvx` downloads and runs the server automatically — no manual install needed.
+That's it. `uvx` downloads and installs everything automatically — no git, no pip, no manual steps.
 
 ---
 
@@ -50,12 +63,13 @@ Add one env var per account using the pattern `MANYCHAT_<ALIAS>`:
     "manychat": {
       "command": "uvx",
       "args": [
-        "--from", "git+https://github.com/ideasdinamicas/manychat-mcp",
+        "--from",
+        "https://github.com/ideasdinamicas/manychat-mcp/archive/refs/heads/main.tar.gz",
         "manychat-mcp"
       ],
       "env": {
-        "MANYCHAT_IQG":    "api_key_for_iqg",
-        "MANYCHAT_FUNDUP": "api_key_for_fundup",
+        "MANYCHAT_IQG":     "api_key_for_iqg",
+        "MANYCHAT_FUNDUP":  "api_key_for_fundup",
         "MANYCHAT_ESCUELA": "api_key_for_escuela"
       }
     }
@@ -63,26 +77,13 @@ Add one env var per account using the pattern `MANYCHAT_<ALIAS>`:
 }
 ```
 
-Each tool receives an `account` parameter where you pass the alias (`"IQG"`, `"FUNDUP"`, etc.).
-
----
-
-## Prerequisites
-
-- **uvx** (comes with `uv`) — [install uv](https://docs.astral.sh/uv/getting-started/installation/)
-  ```bash
-  # Windows (PowerShell)
-  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-  
-  # macOS / Linux
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  ```
+Each tool receives an `account` parameter — pass the alias (`"IQG"`, `"FUNDUP"`, etc.).
 
 ---
 
 ## Getting your ManyChat API key
 
-1. Go to ManyChat → **Settings → API**
+1. ManyChat → **Settings → API**
 2. Generate an access token
 
 ---
