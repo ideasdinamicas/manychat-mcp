@@ -3,25 +3,13 @@
 MCP Server that exposes the full ManyChat public API as tools for Claude Desktop, Cursor, or any MCP-compatible client.
 
 **29 tools** — subscribers, tags, custom fields, bot fields, flows, growth tools, sending.  
-**Multi-account** — one env var per page.
+**Multi-account** — one env var per page, no JSON escaping.
 
 ---
 
 ## Setup (Claude Desktop)
 
-### Step 1 — Install uv (if you don't have it)
-
-**Windows (PowerShell):**
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-**macOS / Linux:**
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-### Step 2 — Edit `claude_desktop_config.json`
+### Step 1 — Edit `claude_desktop_config.json`
 
 | OS | File location |
 |----|--------------|
@@ -33,12 +21,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 {
   "mcpServers": {
     "manychat": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "https://github.com/ideasdinamicas/manychat-mcp/archive/refs/heads/main.tar.gz",
-        "manychat-mcp"
-      ],
+      "command": "npx",
+      "args": ["-y", "github:ideasdinamicas/manychat-mcp"],
       "env": {
         "MANYCHAT_IQG": "your_api_key_here"
       }
@@ -47,9 +31,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 ```
 
-### Step 3 — Restart Claude Desktop
+### Step 2 — Restart Claude Desktop
 
-That's it. `uvx` downloads and installs everything automatically — no git, no pip, no manual steps.
+That's it. `npx` downloads and runs the server automatically — no install needed.
+
+> **Requires:** Node.js 18+ (you likely already have it)
 
 ---
 
@@ -61,12 +47,8 @@ Add one env var per account using the pattern `MANYCHAT_<ALIAS>`:
 {
   "mcpServers": {
     "manychat": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "https://github.com/ideasdinamicas/manychat-mcp/archive/refs/heads/main.tar.gz",
-        "manychat-mcp"
-      ],
+      "command": "npx",
+      "args": ["-y", "github:ideasdinamicas/manychat-mcp"],
       "env": {
         "MANYCHAT_IQG":     "api_key_for_iqg",
         "MANYCHAT_FUNDUP":  "api_key_for_fundup",
@@ -125,6 +107,6 @@ Each tool receives an `account` parameter — pass the alias (`"IQG"`, `"FUNDUP"
 
 ---
 
-## Limitations of the ManyChat API
+## Limitations
 
-The public API does **not** support creating/editing flows, managing broadcasts, or accessing analytics. Everything it does expose is covered here.
+The ManyChat public API does **not** support creating/editing flows, broadcasts, or analytics. Everything it exposes is covered here.
